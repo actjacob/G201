@@ -1,13 +1,11 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Header from './Header';
 import User from './User';
 
 const Counter = () => {
   const [count, setCount] = useState(0);
   const [name, setName] = useState('Mehmet');
-
-  console.log('Counter component re-render');
 
   const user = useMemo(() => {
     return {
@@ -16,11 +14,17 @@ const Counter = () => {
     };
   }, [name]);
 
+  console.log('Counter component re-render');
+
+  const increment = useCallback((amount) => {
+    setCount((prev) => prev + amount);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Header />
+      <Header increment={increment} />
       <Text style={styles.text}>{count} </Text>
-      <Button title="Arttır" onPress={() => setCount(count + 1)} />
+      <Button title="Arttır" onPress={() => increment(1)} />
       <Button title="İsmi değiştir" onPress={() => setName('Ahmet')} />
 
       <User user={user} />
